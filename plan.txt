@@ -1,0 +1,2 @@
+Plan:
+    Convert project into proper 3d graphing software with built in equation editor. 

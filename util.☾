@@ -1,0 +1,18 @@
+⮌ pathlib ⨡ Path as 𝐩
+⨡ glfw
+exec("from OpenGL.GL import *")
+⨡ OpenGL.GL.shaders
+⨡ numpy as np
+⮌ time ⨡ time, sleep
+⮌ PIL ⨡ Image
+⮌ threading ⨡ Thread
+⨡ os
+
+ 𝔑 = 2⌃10
+ 𝔑 = 2⌃9
+𝔑 = 2⌃8
+ 𝔑 = 2⌃5
+
+faces = ¯1⋄ 0⋄ 0, 1⋄0⋄0, ␛
+         0⋄¯1⋄ 0, 0⋄1⋄0, ␛
+         0⋄ 0⋄¯1, 0⋄0⋄1
