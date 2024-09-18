@@ -9,7 +9,9 @@ uniform      vec3 face;
 uniform      vec3 vp_loc;
 uniform      vec2 vp_ang;
 uniform      bool preview;
+// uniform      bool invert;
 uniform       int N;
+bool invert = false;
 
 #define PI 3.14159265359
 
@@ -41,7 +43,7 @@ float      f1(float x,float y,float z) { return min3(vec3(g(x,y,z-2*PI/3), g(x,y
 float      f_(float x,float y,float z) { vec3 p = circmap(x,y,z); return f1(p.x,p.y,p.z); }
 #define R 8.0
 
-float f(vec3 p) { return max(max3(abs(p)) - (1 - min(0.01, 4.0/N)), f_(R*p.x, R*p.y, R*p.z)); }
+float f(vec3 p) { return max(max3(abs(p)) - (1 - min(0.01, 4.0/N)), (invert ? -1 : 1)*f_(R*p.x, R*p.y, R*p.z)); }
 
 vec4 f_p(vec3 p) {
     vec3 a = fromcube(intocube(p));
@@ -58,23 +60,40 @@ vec3 render(vec2 uv) {
     vec3 cast_s = vp_loc;
     vec3 cast_e = cast_s + rot_XZ_YZ(p_e, -vp_ang.y, vp_ang.x);
     vec3 dir = normalize(cast_e - cast_s);
-    float d = 0.0075;
+    // float d = 0.0075;
+    float d = 0.0005;
     
     vec3 p = cast_s;
+    if(f_p(p).w >= 0.99) invert = !invert;
+    
     vec4 clr = vec4(0);
     float pre_a = 0;
-    for(int i = 0; i < 333; i++) {
+    
+    int MAX_ITERS = 300; // reality takes up to this + ≈ln₂(d₀ ⋅ 2ˡᵒᵈ􋕟ˡᵛˡˢ⁺¹ / hone_dist)
+    bool LOD = true;
+    for(int i = 0; i < MAX_ITERS; i++) {
         vec4 n = f_p(p);
+        if(invert) n.xyz = 1 - n.xyz;
         if(n.w != pre_a) {
-            pre_a = n.w;
             if(n.w != 0) {
+                vec4 pclr = clr;
                 clr = mix(clr, n, (1 - clr.w) * n.w);
                 if(clr.w >= 0.99) {
+                    if(d > 0.00001) {
+                        i = 0;
+                        p -= d * dir;
+                        d *= 0.5;
+                        clr = pclr;
+                        LOD = false;
+                        continue;
+                    }
                     clr.xyz *= 1.3 - 0.3 * length(p - cast_s);
                     break;
                 }
             }
+            pre_a = n.w;
         }
+        if(LOD && i > 0 && i % (MAX_ITERS / 6) == 0) d *= 2;
         p += d * dir;
     }
     return clr.xyz;

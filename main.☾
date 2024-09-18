@@ -1,5 +1,15 @@
  shoutout to thetawise for generating opengl boilerplate
 
+VERT_SHADE_CODE = ␛
+󰦥󰦥󰦥󰦥󰦥
+#version 330
+layout(location = 0) in vec3 aPos;
+in vec4 pos;
+void main() { gl_Position = pos; }
+󰦥󰦥󰦥󰦥󰦥
+
+FRAG_SHADE_CODE = open("shader.glsl").read()
+
 󰋺("util", *)
 󰋺("obj_builder", "build_obj")
 
@@ -10,13 +20,6 @@ set_texture_param = 𝚲"MIN"⋄"MAG"ᴍ󰲡glTexParameteri(GL_TEXTURE_2D, eval(
                                                   GL_NEAREST)󰅂
 set_vp_clear = ⥌r,g,b,w=𝔑,h=𝔑↦glViewport(0,0,w,h) ► glClearColor(r,g,b,1) ► glClear(GL_COLOR_BUFFER_BIT)
 empty = 𝚲np.full((𝔑, 𝔑, 3), (1.0/255.0, 0, 0)).astype(np.float32)
-
-VERT_SHADE_CODE = ‹
-#version 330
-layout(location = 0) in vec3 aPos;
-in vec4 pos;
-void main() { gl_Position = pos; }›
-FRAG_SHADE_CODE = open("shader.glsl").read()
 
 glfw.init ∨ (ⴴ⨳"glfw can not be initialized!")
 
@@ -58,6 +61,7 @@ texture = glGenTextures(1)
             set_vp_clear(0,0,0)
             
             unif("preview", "1i", ⴴ)
+             unif( "invert", "1i", ⴴ)
             unif(    "tex", "1i", 0)
             unif(      "N", "1i", 𝔑)
             unif(    "res", "2f", 𝔑, 𝔑)
@@ -86,8 +90,9 @@ texture = glGenTextures(1)
     
     framebuffer_resize(window, ⠤l["res"])
     
-    t0 = time
-    vp_ang, vp_loc=0⋄0, 0⋄0⋄0
+    𝑇 = FPS_Tracker
+    keys = Activator
+    vp_ang, vp_loc, invert = 0⋄0, 0⋄0⋄0, ⴴ
     ➰ ¬glfw.window_should_close(window):
         set_vp_clear(0,0,0,⠤res≔l["res"])
         glUseProgram(shader)
@@ -95,11 +100,14 @@ texture = glGenTextures(1)
         Δcur = glfw.get_cursor_pos(window)ζ(wc≔resᴍ󰲡½⋅x) ꟿ - ᴍ 𝑖
         glfw.set_cursor_pos(window, ⠤wc)
         vp_ang=vp_ang ζ Δcur ꟿ󰲣x+τ⋅y/res₁
-        vp_ang₁ = max(min(vp_ang₁,½⋅π),-½⋅π)
+        vp_ang₁ = ((vp_ang₁, ½⋅π)⤈, -½⋅π)⤉
         
-        HK = 󰲡glfw.get_key(window,getattr(glfw,‹KEY_⟦x⟧›))
+        HK = 󰲡glfw.get_key(window, getattr(glfw,‹KEY_⟦x⟧›))
+        KD = 󰲡keys(x, HK(x))
         
-        ¿ HK∘␛P: scan_faces 
+        ¿ HK∘␛P: scan_faces
+        
+        ¿ KD∘␛I: invert ^= 1
         
         moveΔ = 0⋄0⋄0
         ¿ HK∘␛A          : moveΔ₀ -= 1
@@ -109,19 +117,21 @@ texture = glGenTextures(1)
         moveΔ = rot_XZ(rot_YZ(moveΔ, -vp_ang₁), vp_ang₀)
         ¿ HK∘"SPACE"     : moveΔ₁ += 1
         ¿ HK∘"LEFT_SHIFT": moveΔ₁ -= 1
-        vp_loc = vp_locζmoveΔ ꟿ󰲣x+0.1⋅y
+        vp_loc = vp_locζmoveΔ ꟿ󰲣x+𝑇󰀷⋅y
         
         unif("res",     "2f", ⠤res)
         unif("vp_loc",  "3f", ⠤vp_loc)
         unif("vp_ang",  "2f", vp_ang₀, vp_ang₁)
-        unif("t",       "1f", time - t0)
+        unif("t",       "1f", 𝑇󰁏)
         unif("N",       "1i", 𝔑)
         unif("preview", "1i", ⴳ)
+         unif("invert" , "1i", invert)
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_2D, texture)
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4)
         
         glfw.swap_buffers(window) ► glfw.poll_events()
+        ¿(𝑇)󰀂%10→¬:𝑇☾
 
 render_preview 
 glfw.terminate 
