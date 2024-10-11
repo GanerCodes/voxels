@@ -1,2 +1,2 @@
-Plan:
-    Convert project into proper 3d graphing software with built in equation editor. 
+Hi, sorry for the late reply I´ve been doing a lot recently.
+My project is to turn the current voxel tool prototype into a proper 3d graphing software with a built-in custom equation editor. Some misc fixes that would be done would be larger render sizes, faster running speed, better/faster render previewing, saving/loading from files.
