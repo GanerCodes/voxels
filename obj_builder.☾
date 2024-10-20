@@ -6,7 +6,7 @@
 v2i = lambda s: 𝑖(s₀) + (256⋅𝑖(s₁)) + (256²⋅𝑖(s₂))
 
 ⊢ thread_wrap(𝑓, ⠤𝐴, ⠶𝐾):
-    ↪ 𝑓(⠤𝐴,⠶𝐾)  󰤱󰆴
+    ↪ 𝚲𝑓(⠤𝐴,⠶𝐾)  󰤱󰆴
 
     o = {}
     τ≔Thread(target=𝚲o₀≔𝑓(⠤𝐴,⠶𝐾))→.start 
@@ -68,7 +68,7 @@ v2i = lambda s: 𝑖(s₀) + (256⋅𝑖(s₁)) + (256²⋅𝑖(s₂))
 ⊢ build_obj(outs):
     ☾"Building object"
     
-    rects = outs.items  ꟿ 󰲣thread_wrap(img_to_rects, y, ⠤x)󰅂 ᴍ  Σ
+    rects = outs.items ꟿ 󰲣thread_wrap(img_to_rects, y, ⠤x)󰅂 ᴍ  Σ
     ☾"Generated rectangles"
     
     𝐍 = facesᴍ𝑡
