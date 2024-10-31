@@ -9,11 +9,11 @@ exec("from OpenGL.GL import *")
 ⮌ util ⨡ SCRIPT ; sub, sup = SCRIPT.sub○ᔐ, SCRIPT.sup○ᔐ
 ⨡ os
 
- 𝔑 = 2⌃10
- 𝔑 = 2⌃9
- 𝔑 = 2⌃8
-𝔑 = 2⌃7
- 𝔑 = 2⌃5
+ 𝔑 = 2¹⁰
+𝔑 = 2⁹
+ 𝔑 = 2⁸
+ 𝔑 = 2⁷
+ 𝔑 = 2⁵
 
 faces = ¯1⋄ 0⋄ 0, 1⋄0⋄0, ␛
          0⋄¯1⋄ 0, 0⋄1⋄0, ␛

@@ -41,6 +41,7 @@ vec3  circmap(float x,float y,float z) { return vec3(sqrt(sq(x)+sq(y))-5,z,2*2*a
 float       g(float x,float y,float z) { return sqrt(sq(x+sin(z))+sq(y+cos(z))) - 2.0/3; }
 float      f1(float x,float y,float z) { return min3(vec3(g(x,y,z-2*PI/3), g(x,y,z), g(x,y,z+2*PI/3))); }
 float      f_(float x,float y,float z) { vec3 p = circmap(x,y,z); return f1(p.x,p.y,p.z); }
+// float      f_(float x,float y,float z) { return max(abs(x),max(abs(y),abs(z))) - 0.3; }
 #define R 8.0
 
 float f(vec3 p) { return max(max3(abs(p)) - (1 - min(0.01, 4.0/N)), (invert ? -1 : 1)*f_(R*p.x, R*p.y, R*p.z)); }
