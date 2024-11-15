@@ -37,10 +37,27 @@ vec3 fromcube(vec3 p) { return p / N * 2 - 1; }
 // float f_A(float x, float y, float z) { return sin(atan(y,x)+3*z) + 2*sqrt(x*x+y*y) - 0.5; }
 // float f_b(float x, float y, float z) { return f_A(f_A(x,y,z),f_A(y,z,x),f_A(z,x,y)) - 4; }
 
-vec3  circmap(float x,float y,float z) { return vec3(sqrt(sq(x)+sq(y))-5,z,2*2*atan(y,x)); }
+/* vec3  circmap(float x,float y,float z) { return vec3(sqrt(sq(x)+sq(y))-5,z,2*2*atan(y,x)); }
 float       g(float x,float y,float z) { return sqrt(sq(x+sin(z))+sq(y+cos(z))) - 2.0/3; }
 float      f1(float x,float y,float z) { return min3(vec3(g(x,y,z-2*PI/3), g(x,y,z), g(x,y,z+2*PI/3))); }
-float      f_(float x,float y,float z) { vec3 p = circmap(x,y,z); return f1(p.x,p.y,p.z); }
+float      f_(float x,float y,float z) { vec3 p = circmap(x,y,z); return f1(p.x,p.y,p.z); } */
+
+
+float g(float x, float y, float z) {
+    return max(abs(x+sin(z)), abs(y+cos(z)))-1.0/4;
+}
+vec3 f2(float x, float y, float z) {
+    return vec3(max(abs(x),abs(y))-3.0,z,2.0*2*atan(y,x))*2.0;
+}
+float f_(float x, float y, float z) {
+    vec3 v = f2(x, y, z);
+    x=v.x; y=v.y; z=v.z;
+    return min(min(g(x,y,z+0.0*2*PI/4),
+                   g(x,y,z+1.0*2*PI/4)),
+               min(min(g(x,y,z+2.0*2*PI/4),
+                       g(x,y,z+3.0*2*PI/4)),
+                   g(x,y,z+4.0*2*PI/4))); }
+
 // float      f_(float x,float y,float z) { return max(abs(x),max(abs(y),abs(z))) - 0.3; }
 #define R 8.0
 
