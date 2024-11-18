@@ -13,13 +13,12 @@ FRAG_SHADE_CODE = open("shader.glsl").read()
 󰋺("util", *)
 󰋺("obj_builder", "build_obj")
 
-rot_XZ = 󰲣[x₀⋅cos(y)-x₂⋅sin(y),x₁,x₀⋅sin(y)+x₂⋅cos(y)]
-rot_YZ = 󰲣[x₀,x₁⋅cos(y)-x₂⋅sin(y),x₁⋅sin(y)+x₂⋅cos(y)]
+rot_XZ = 󰲣[x₀⋅􋐳(y)-x₂⋅􋐲(y),x₁,x₀⋅􋐲(y)+x₂⋅􋐳(y)]
+rot_YZ = 󰲣[x₀,x₁⋅􋐳(y)-x₂⋅􋐲(y),x₁⋅􋐲(y)+x₂⋅􋐳(y)]
 
-set_texture_param = 𝚲"MIN"⋄"MAG"ᴍ󰲡glTexParameteri(GL_TEXTURE_2D, eval(‹GL_TEXTURE_⟦x⟧_FILTER›),
-                                                  GL_NEAREST)󰅂
+set_texture_param = 𝚲"MIN"⋄"MAG"ᐖglTexParameteri(GL_TEXTURE_2D, eval(‹GL_TEXTURE_⟦⟞⟧_FILTER›), GL_NEAREST)
 set_vp_clear = ⥌r,g,b,w=𝔑,h=𝔑↦glViewport(0,0,w,h) ► glClearColor(r,g,b,1) ► glClear(GL_COLOR_BUFFER_BIT)
-empty = 𝚲np.full((𝔑, 𝔑, 3), (1.0/255.0, 0, 0)).astype(np.float32)
+empty = 𝚲np.full((𝔑, 𝔑, 3), (255􍨅, 0, 0)).astype(np.float32)
 
 glfw.init ∨ (ⴴ⨳"glfw can not be initialized!")
 
@@ -32,10 +31,10 @@ shader = OpenGL.GL.shaders.compileProgram(
     ⠤(VERT_SHADE_CODE⋄GL_VERTEX_SHADER, FRAG_SHADE_CODE⋄GL_FRAGMENT_SHADER) ␛
         ꟿ OpenGL.GL.shaders.compileShader)
 
-vrts = np.array([¯1, ¯1,  0,
-                  1, ¯1,  0,
-                 ¯1,  1,  0,
-                  1,  1,  0], dtype=np.float32)
+vrts = np.array([󷰾, 󷰾, 0,
+                 1, 󷰾, 0,
+                 󷰾, 1, 0,
+                 1, 1, 0], dtype=np.float32)
 
 glBindBuffer(GL_ARRAY_BUFFER, VBO ≔ glGenBuffers(1))
 glBufferData(GL_ARRAY_BUFFER, vrts.nbytes, vrts, GL_STATIC_DRAW)
@@ -52,10 +51,10 @@ texture = glGenTextures(1)
 ⊢ scan_faces():
     glUseProgram(shader)
     outs = {}
-    ∀i,f∈↨faces:
+    ∀i,f∈faces↨:
         glBindTexture(GL_TEXTURE_2D, texture)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 𝔑, 𝔑, 0, GL_RGB, GL_FLOAT, empty )
-        set_texture_param 
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 𝔑, 𝔑, 0, GL_RGB, GL_FLOAT, empty)
+        set_texture_param
         I = 0
         ➰ⴳ:
             set_vp_clear(0,0,0)
@@ -78,8 +77,7 @@ texture = glGenTextures(1)
             outs[i, I◄I+=1] = buf
             
             glBindTexture(GL_TEXTURE_2D, texture)
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 𝔑, 𝔑, 0,
-                         GL_RGB, GL_UNSIGNED_BYTE, buf)
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 𝔑, 𝔑, 0, GL_RGB, GL_UNSIGNED_BYTE, buf)
             glfw.swap_buffers(window)
     build_obj(outs)
 
@@ -97,16 +95,15 @@ texture = glGenTextures(1)
         set_vp_clear(0,0,0,⠤res≔l["res"])
         glUseProgram(shader)
         
-        Δcur = glfw.get_cursor_pos(window)ζ(wc≔resᴍ󰲡½⋅x) ꟿ - ᴍ 𝑖
+        Δcur = glfw.get_cursor_pos(window)ζ(wc≔resᐵ½) ꟿ - ᴍ 𝑖
         glfw.set_cursor_pos(window, ⠤wc)
         vp_ang=vp_ang ζ Δcur ꟿ󰲣x+τ⋅y/res₁
-        vp_ang₁ = ((vp_ang₁, ½⋅π)⤈, -½⋅π)⤉
+        vp_ang₁ = ((vp_ang₁, 󷺍)⤈, 󷱮)⤉
         
         HK = 󰲡glfw.get_key(window, getattr(glfw,‹KEY_⟦x⟧›))
         KD = 󰲡keys(x, HK(x))
         
         ¿ HK∘␛P: scan_faces
-        
         ¿ KD∘␛I: invert ^= 1
         
         moveΔ = 0⋄0⋄0
@@ -133,5 +130,5 @@ texture = glGenTextures(1)
         glfw.swap_buffers(window) ► glfw.poll_events()
         ¿(𝑇)󰀂%10→¬:𝑇☾
 
-render_preview 
-glfw.terminate 
+render_preview
+glfw.terminate

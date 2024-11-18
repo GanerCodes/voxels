@@ -21,6 +21,8 @@ vec3 rot_YZ(vec3 p,float r){return vec3(p.x,p.y*cos(r)-p.z*sin(r),p.y*sin(r)+p.z
 vec3 rot_XZ_YZ(vec3 p, float r1, float r2) {return rot_XZ(rot_YZ(p, r1), r2);}
 
 float sq(float x){return x*x;}
+float min2(vec2 v){return min(v.x,v.y);}
+float max2(vec2 v){return max(v.x,v.y);}
 float min3(vec3 v){return min(min(v.x,v.y),v.z);}
 float max3(vec3 v){return max(max(v.x,v.y),v.z);}
 
@@ -30,7 +32,6 @@ vec3 i2v(int z) {return vec3(z&0xFF, (z>>8)&0xFF, (z>>16)&0xFF) / 255.0;}
 vec3 cubecore(vec3 p) { return vec3(floor(p.x), floor(p.y), floor(p.z)); }
 vec3 intocube(vec3 p) { return cubecore(N * 0.5*(p+1)); }
 vec3 fromcube(vec3 p) { return p / N * 2 - 1; }
-
 
 // float f_A(float x, float y, float z) { return 3 * sin(2*atan(y,x)+z) + 2*sqrt(x*x+y*y) - 0.5; }
 // float f_b(float x, float y, float z) { return f_A(x + 2*cos(z), y+2*sin(z), z/3); }
@@ -42,26 +43,21 @@ float       g(float x,float y,float z) { return sqrt(sq(x+sin(z))+sq(y+cos(z))) 
 float      f1(float x,float y,float z) { return min3(vec3(g(x,y,z-2*PI/3), g(x,y,z), g(x,y,z+2*PI/3))); }
 float      f_(float x,float y,float z) { vec3 p = circmap(x,y,z); return f1(p.x,p.y,p.z); } */
 
-
-float g(float x, float y, float z) {
-    return max(abs(x+sin(z)), abs(y+cos(z)))-1.0/4;
-}
-vec3 f2(float x, float y, float z) {
-    return vec3(max(abs(x),abs(y))-3.0,z,2.0*2*atan(y,x))*2.0;
-}
-float f_(float x, float y, float z) {
-    vec3 v = f2(x, y, z);
-    x=v.x; y=v.y; z=v.z;
-    return min(min(g(x,y,z+0.0*2*PI/4),
-                   g(x,y,z+1.0*2*PI/4)),
-               min(min(g(x,y,z+2.0*2*PI/4),
-                       g(x,y,z+3.0*2*PI/4)),
-                   g(x,y,z+4.0*2*PI/4))); }
+#define C 2.0
+#define R 7.0
+float g(vec3 p) {
+    return length(vec2(p.x+sin(p.z), p.y+cos(p.z)))-1.0/3.0; }
+float f2(vec3 p) {
+    return min(min(
+        g(p+vec3(0,0,0.0*2*PI/3.0)),
+        g(p+vec3(0,0,1.0*2*PI/3.0))),
+        g(p+vec3(0,0,2.0*2*PI/3.0))); }
+float f_(vec3 p) {
+    return f2(vec3(length(p.xy)-5.0, p.z, (1+1.0/(3*2))*2*atan(p.y,p.x))); }
 
 // float      f_(float x,float y,float z) { return max(abs(x),max(abs(y),abs(z))) - 0.3; }
-#define R 8.0
 
-float f(vec3 p) { return max(max3(abs(p)) - (1 - min(0.01, 4.0/N)), (invert ? -1 : 1)*f_(R*p.x, R*p.y, R*p.z)); }
+float f(vec3 p) { return max(max3(abs(p)) - (1 - min(0.01, 4.0/C)), (invert ? -1 : 1)*f_(R*p)); }
 
 vec4 f_p(vec3 p) {
     vec3 a = fromcube(intocube(p));
