@@ -46,14 +46,14 @@ float      f_(float x,float y,float z) { vec3 p = circmap(x,y,z); return f1(p.x,
 #define C 2.0
 #define R 7.0
 float g(vec3 p) {
-    return length(vec2(p.x+sin(p.z), p.y+cos(p.z)))-1.0/3.0; }
+    return length(vec2(p.x+sin(p.z), p.y+cos(p.z)))-0.5; }
 float f2(vec3 p) {
     return min(min(
         g(p+vec3(0,0,0.0*2*PI/3.0)),
         g(p+vec3(0,0,1.0*2*PI/3.0))),
         g(p+vec3(0,0,2.0*2*PI/3.0))); }
 float f_(vec3 p) {
-    return f2(vec3(length(p.xy)-5.0, p.z, (1+1.0/(3*2))*2*atan(p.y,p.x))); }
+    return f2(vec3(length(p.xy)-3.0, p.z, (1+1.0/(3*2))*2*atan(p.y,p.x))); }
 
 // float      f_(float x,float y,float z) { return max(abs(x),max(abs(y),abs(z))) - 0.3; }
 
