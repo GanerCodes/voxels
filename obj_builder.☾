@@ -28,7 +28,7 @@ v2i = lambda s: 𝑖(s₀) + (256⋅𝑖(s₁)) + (256²⋅𝑖(s₂))
     
     𝑗 = j󰂖+½⋅nD-Δ
     
-    ∀a,𝓭∈enumerate(dat):
+    ∀a,𝓭∈dat↨:
         B = 0
         ➰B<𝔑:
             𝓭0 = 𝓭󰂔
@@ -54,7 +54,7 @@ v2i = lambda s: 𝑖(s₀) + (256⋅𝑖(s₁)) + (256²⋅𝑖(s₂))
 ⊢ build_obj(outs):
     ☾"Building object"
     
-    rects = outs.items ꟿ 󰲣thread_wrap(img_to_rects, y, ⠤x)󰅂 ᴍ  Σ
+    rects = outs.items ꟿ 󰲣thread_wrap(img_to_rects, y, ⠤x)󰅂 ᴍ  ⨁
     ☾"Generated rectangles"
     
     𝐍 = facesᴍ𝑡
@@ -71,7 +71,7 @@ v2i = lambda s: 𝑖(s₀) + (256⋅𝑖(s₁)) + (256²⋅𝑖(s₂))
         C = sorted(C) ᴍ 󰲡inv𝐕ₓ
         ¿  n≡2: 𝐅.append(((C₀,C₂,C₃,C₁),n+1))
         ⸘  n≡3: 𝐅.append(((C₀,C₁,C₃,C₂),n+1))
-        ⸘𝐍ₙΣ<0: 𝐅.append(((C₃,C₂,C₀,C₁),n+1))
+        ⸘𝐍ₙ⨁<0: 𝐅.append(((C₃,C₂,C₀,C₁),n+1))
         ¡     : 𝐅.append(((C₃,C₁,C₀,C₂),n+1))
     ☾"Generated faces"
     
