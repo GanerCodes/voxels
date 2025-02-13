@@ -74,7 +74,7 @@ texture = glGenTextures(1)
             buf = np.zeros((𝔑, 𝔑, 3), dtype=np.uint8)
             glReadPixels(0, 0, 𝔑, 𝔑, GL_RGB, GL_UNSIGNED_BYTE, buf)
             ¿¬np.any(buf):⇥
-            outs[i, I◄I+=1] = buf
+            outs[i, I◄I󷸊+1] = buf
             
             glBindTexture(GL_TEXTURE_2D, texture)
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 𝔑, 𝔑, 0, GL_RGB, GL_UNSIGNED_BYTE, buf)
@@ -98,22 +98,22 @@ texture = glGenTextures(1)
         Δcur = glfw.get_cursor_pos(window)󱑼(wc≔resᐵ½) ꟿ - ᴍ 𝑖
         glfw.set_cursor_pos(window, ⠤wc)
         vp_ang=vp_ang 󱑼 Δcur ꟿ󰲣x+τ⋅y/res₁
-        vp_ang₁ = ((vp_ang₁, 󷺍)⤈, 󷱮)⤉
+        vp_ang₁ = 󷱮 󷹄ᵛᵖ􋕟ᵃⁿᵍ􊿦 󷺍
         
         HK = 󰲡glfw.get_key(window, getattr(glfw,‹KEY_⟦x⟧›))
         KD = 󰲡keys(x, HK(x))
         
         ¿ HK∘␛P: scan_faces
-        ¿ KD∘␛I: invert ^= 1
+        ¿ KD∘␛I: invert 󷸊^ 1
         
         moveΔ = 0⋄0⋄0
-        ¿ HK∘␛A          : moveΔ₀ -= 1
-        ¿ HK∘␛D          : moveΔ₀ += 1
-        ¿ HK∘␛W          : moveΔ₂ -= 1
-        ¿ HK∘␛S          : moveΔ₂ += 1
+        ¿ HK∘␛A          : moveΔ₀ 󷸊 -1
+        ¿ HK∘␛D          : moveΔ₀ 󷸊 +1
+        ¿ HK∘␛W          : moveΔ₂ 󷸊 -1
+        ¿ HK∘␛S          : moveΔ₂ 󷸊 +1
         moveΔ = rot_XZ(rot_YZ(moveΔ, -vp_ang₁), vp_ang₀)
-        ¿ HK∘"SPACE"     : moveΔ₁ += 1
-        ¿ HK∘"LEFT_SHIFT": moveΔ₁ -= 1
+        ¿ HK∘"SPACE"     : moveΔ₁ 󷸊 +1
+        ¿ HK∘"LEFT_SHIFT": moveΔ₁ 󷸊 -1
         vp_loc = vp_loc󱑼moveΔ ꟿ󰲣x+𝑇󰀷⋅y
         
         unif("res",     "2f", ⠤res)
